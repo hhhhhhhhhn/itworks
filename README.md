@@ -3,13 +3,13 @@ A simple node unit testing library. It is completly error driven and doesn't nee
 
 ## Installation
 ```
-npm install --save-dev itworks
+npm install --save-dev itworksjs
 ```
 
 ## Usage
 Create a test file, and set it as `npm test` in the `package.json` file. In the test file, follow this example:
 ```javascript
-const {it, works} = require("itworks")
+const {it, works} = require("itworksjs")
 
 it("should be able to evaluate expressions", ()=>{
     if(1+1*2 != 3){
