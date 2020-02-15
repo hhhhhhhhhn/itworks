@@ -1,3 +1,9 @@
+consolelog = console.log;
+console.log = ()=>{};          //default console.log function removed
+console.info = ()=>{};
+console.warn = ()=>{};
+
+
 function it(message, code){
     /**Takes a message (text displayed when testing and identifier) and a function,
      *  and adds it to a global tests object (which is created if it doesn't already exist).*/
@@ -14,15 +20,15 @@ async function works(){
     for ([message, code] of Object.entries(tests)){
         try{
             await code()
-            console.log(`[O]: It ${message}`)
+            consolelog(`[O]: It ${message}`)
             testsFinished += 1
         }catch(err){
-            console.log(`[X]: It ${message} FAILED: ${err.message}`)
+            consolelog(`[X]: It ${message} FAILED: ${err.message}`)
         }
     }
-    console.log(`\nTests Finished, Result: ${testsFinished}/${Object.entries(tests).length} Passed`)
+    consolelog(`\nTests Finished, Result: ${testsFinished}/${Object.entries(tests).length} Passed`)
     if(testsFinished==Object.entries(tests).length){
-        console.log("\nIt Works!")
+        consolelog("\nIt Works!")
     }
     return [testsFinished, Object.entries(tests).length]
 }
