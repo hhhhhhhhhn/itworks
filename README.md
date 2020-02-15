@@ -36,4 +36,4 @@ Tests Finished, Result: 1/2 Passed
 ## Functions
 - `it`: Takes a message (text displayed when testing and identifier) and a function, and adds it to a global `tests` object (which is created if it doesn't already exist).
 
-- `works`: Tests all functions in the `tests` object, considers them failed if the throw an error (which is displayed).
+- `works`: Tests all functions in the `tests` object, considers them failed if they throw an error (which is displayed). The function also returns [passedTests, totalTests].
