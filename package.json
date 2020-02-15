@@ -1,0 +1,24 @@
+{
+  "name": "itworks",
+  "version": "1.0.0",
+  "description": "A simple unit testing library",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/oekshido/itworks.git"
+  },
+  "keywords": [
+    "unittesting",
+    "testing",
+    "test"
+  ],
+  "author": "oekshido",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/oekshido/itworks/issues"
+  },
+  "homepage": "https://github.com/oekshido/itworks#readme"
+}
