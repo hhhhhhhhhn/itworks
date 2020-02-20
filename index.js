@@ -3,6 +3,8 @@ console.log = ()=>{};          //default console.log function removed
 console.info = ()=>{};
 console.warn = ()=>{};
 
+const fs = require("fs")
+const path = require("path")
 
 function it(message, code){
     /**Takes a message (text displayed when testing and identifier) and a function,
@@ -33,4 +35,21 @@ async function works(){
     return [testsFinished, Object.entries(tests).length]
 }
 
-module.exports = {it: it, works: works}
+function functions(imports){
+    /**Imports given functions from file given in the .from() function */
+    return {from: function(fileName){
+        fileName = path.resolve(process.cwd(), fileName)
+        fileText = fs.readFileSync(fileName, "utf8")
+        tempFile = fileName.replace(".js", "temp.js")
+        moduleExports = ""
+        for(element of imports){
+            moduleExports += `${element}:${element},`
+        }
+        fs.writeFileSync(tempFile, fileText + `;module.exports = {${moduleExports}}`)
+        newModule = require(tempFile)
+        fs.unlinkSync(tempFile)
+        return newModule
+    }}
+}
+
+module.exports = {it: it, works: works, functions: functions}
