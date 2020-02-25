@@ -1,4 +1,4 @@
-consolelog = console.log;
+console.print = console.log;
 console.log = ()=>{};          //default console.log function removed
 console.info = ()=>{};
 console.warn = ()=>{};
@@ -15,24 +15,27 @@ function it(message, code){
     tests[message] = code
 }
 
-async function works(){
+async function works(testList){
     /**Tests all functions in the tests object, considers them failed if the throw an error
      *  (which is displayed). */
+    if(!testList){
+        testList = tests
+    }
     var testsFinished = 0;
-    for ([message, code] of Object.entries(tests)){
+    for ([message, code] of Object.entries(testList)){
         try{
             await code()
-            consolelog(`[O]: It ${message}`)
+            console.print(`[O]: It ${message}`)
             testsFinished += 1
         }catch(err){
-            consolelog(`[X]: It ${message} FAILED: ${err.message}`)
+            console.print(`[X]: It ${message} FAILED: ${err.message}`)
         }
     }
-    consolelog(`\nTests Finished, Result: ${testsFinished}/${Object.entries(tests).length} Passed`)
-    if(testsFinished==Object.entries(tests).length){
-        consolelog("\nIt Works!")
+    console.print(`\nTests Finished, Result: ${testsFinished}/${Object.entries(tests).length} Passed`)
+    if(testsFinished==Object.entries(testList).length){
+        console.print("\nIt Works!")
     }
-    return [testsFinished, Object.entries(tests).length]
+    return [testsFinished, Object.entries(testList).length]
 }
 
 function functions(imports){
@@ -52,4 +55,19 @@ function functions(imports){
     }}
 }
 
-module.exports = {it: it, works: works, functions: functions}
+function arrayEquals(array1, array2){
+    /**Checks if two arrays are equal (recursive) */
+    if(array1 == array2) return true
+    if(array1.length != array2.length) return false
+
+    for(var i = 0; i < array1.length; i++){
+        if(Array.isArray(array1[i])){
+            if(!arrayEquals(array1[i], array2[i])) return false
+        }else{
+            if(array1[i] != array2[i]) return false
+        }
+    }
+    return true
+}
+
+module.exports = {it: it, works: works, functions: functions, arrayEquals: arrayEquals}

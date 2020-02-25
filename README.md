@@ -81,3 +81,9 @@ It Works!
 - `works()`: Tests all functions in the `tests` object, considers them failed if they throw an error (which is displayed). The function also returns [passedTests, totalTests].
 
 - `functions(functionlist).from(file)`: Similar to the require function. Imports the functions (given as an array of strings) even if they are not in `module.exports`.
+
+- `arrayEquals(array1, array2)`: Checks recursively if two arrays are equal.
+
+---
+### Note
+`console` functions were replaced with empty ones, to suppress console logs. Use the new `console.print` function instead. 
