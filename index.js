@@ -32,7 +32,7 @@ async function works(testList){
         }
     }
     if(testsFinished==Object.entries(testList).length){
-        console.print(`\nTests PASSED, Result: ${testsFinished}/${Object.entries(tests).length}`)
+        console.print(`\nTest PASSED, Result: ${testsFinished}/${Object.entries(tests).length}`)
         console.print("\nIt Works!")
     }else{
         throw new Error(`Test FAILED, Result: ${testsFinished}/${Object.entries(tests).length} Passed`)
