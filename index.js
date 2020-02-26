@@ -31,11 +31,12 @@ async function works(testList){
             console.print(`[X]: It ${message} FAILED: ${err.message}`)
         }
     }
-    console.print(`\nTests Finished, Result: ${testsFinished}/${Object.entries(tests).length} Passed`)
     if(testsFinished==Object.entries(testList).length){
+        console.print(`\nTests PASSED, Result: ${testsFinished}/${Object.entries(tests).length}`)
         console.print("\nIt Works!")
+    }else{
+        throw new Error(`Test FAILED, Result: ${testsFinished}/${Object.entries(tests).length} Passed`)
     }
-    return [testsFinished, Object.entries(testList).length]
 }
 
 function functions(imports){
