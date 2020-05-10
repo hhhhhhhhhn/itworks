@@ -29,8 +29,10 @@ function multiPrint(messages, step){
     }, step)
 }
 
-async function works(testList){
-    /**Tests all functions in the tests object, considers them failed if the throw an error (which is displayed). */
+async function works(testList, err = false){
+    /**Tests all functions in the tests object, considers them failed if the throw an error (which is displayed). 
+     * err argument throws an error instead of exiting with non-zero code.
+    */
     if(!testList){
         testList = tests
     }
@@ -52,8 +54,13 @@ async function works(testList){
         write(`\nTest PASSED, Result: ${testsFinished}/${Object.entries(tests).length}\n`)
         write("\nIt Works!\n")
         return
-    }else{
+    }
+    else if(err){
         throw new Error(`Test FAILED, Result: ${testsFinished}/${Object.entries(tests).length}`)
+    }
+    else{
+        write(`Test FAILED, Result: ${testsFinished}/${Object.entries(tests).length}\n`)
+        process.exit(1)
     }
 }
 

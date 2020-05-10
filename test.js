@@ -43,11 +43,14 @@ it("Should be able to test async errors (negative)", async ()=>{
 
 async function main(){
     try{
-        await works()
+        await works(null, true)
         throw new Error("Test PASSED, Result: 6/6")
     }
     catch(err){
-        if(!err.message.includes("2/6")) throw new Error("Test Failed")
+        if(!err.message.includes("2/6")){
+            throw new Error("Test Failed")
+            process.exit(1)
+        }
     }
 }
 
