@@ -50,7 +50,7 @@ async function works(testList, err = false){
             write(`[X]: It ${message}${red} FAILED: ${err ? err.message : "(No Error Message)"}\n${reset}`)
         }
     }
-    if(testsFinished==Object.entries(testList).length){
+    if(testsFinished == Object.entries(testList).length){
         write(`\nTest PASSED, Result: ${testsFinished}/${Object.entries(tests).length}\n`)
         write("\nIt Works!\n")
         return
