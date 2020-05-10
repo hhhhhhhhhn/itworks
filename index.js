@@ -1,41 +1,59 @@
-console.print = console.log;
-console.log = ()=>{};          //default console.log function removed
-console.info = ()=>{};
-console.warn = ()=>{};
+const stdout = process.stdout
+const write = text => stdout.write(text)
+process.stdout = ()=>{}
+console.log = ()=>{}                                                            // Default console.log function removed
+console.info = ()=>{}
+console.warn = ()=>{}
 
 const fs = require("fs")
 const path = require("path")
 
+const red = "\033[31m"
+const reset = "\x1b[0m"
+
 function it(message, code){
-    /**Takes a message (text displayed when testing and identifier) and a function,
-     *  and adds it to a global tests object (which is created if it doesn't already exist).*/
+    /**Takes a message (text displayed when testing and identifier) and a function, and adds it to a global tests object
+     *(which is created if it doesn't already exist).*/
     if(!global["tests"]){
-        global["tests"] = {};
+        global["tests"] = {}
     }
     tests[message] = code
 }
 
+function multiPrint(messages, step){
+    /**Creates interval for printing */
+    var index = 0
+    return setInterval(()=>{
+        write(messages[index])
+        index = (index + 1) % messages.length
+    }, step)
+}
+
 async function works(testList){
-    /**Tests all functions in the tests object, considers them failed if the throw an error
-     *  (which is displayed). */
+    /**Tests all functions in the tests object, considers them failed if the throw an error (which is displayed). */
     if(!testList){
         testList = tests
     }
     var testsFinished = 0;
-    for ([message, code] of Object.entries(testList)){
+    for (var [message, code] of Object.entries(testList)){
+        write(`[.]: It ${message}\r`)
+        var inter = multiPrint([`[ ]: It ${message}\r`, `[.]: It ${message}\r`], 500)
         try{
             await code()
-            console.print(`[O]: It ${message}`)
+            clearInterval(inter)
+            write(`[O]: It ${message}\n`)
             testsFinished += 1
         }catch(err){
-            console.print(`[X]: It ${message} FAILED: ${err.message}`)
+            clearInterval(inter)
+            write(`[X]: It ${message}${red} FAILED: ${err ? err.message : "(No Error Message)"}\n${reset}`)
         }
     }
     if(testsFinished==Object.entries(testList).length){
-        console.print(`\nTest PASSED, Result: ${testsFinished}/${Object.entries(tests).length}`)
-        console.print("\nIt Works!")
+        write(`\nTest PASSED, Result: ${testsFinished}/${Object.entries(tests).length}\n`)
+        write("\nIt Works!\n")
+        return
     }else{
-        throw new Error(`Test FAILED, Result: ${testsFinished}/${Object.entries(tests).length} Passed`)
+        throw new Error(`Test FAILED, Result: ${testsFinished}/${Object.entries(tests).length}`)
     }
 }
 
@@ -43,14 +61,14 @@ function functions(imports){
     /**Imports given functions from file given in the .from() function */
     return {from: function(fileName){
         fileName = path.resolve(process.cwd(), fileName)
-        fileText = fs.readFileSync(fileName, "utf8")
-        tempFile = fileName.replace(".js", "temp.js")
-        moduleExports = ""
+        var fileText = fs.readFileSync(fileName, "utf8")
+        var tempFile = fileName.replace(".js", "temp.js")
+        var moduleExports = ""
         for(element of imports){
             moduleExports += `${element}:${element},`
         }
         fs.writeFileSync(tempFile, fileText + `;module.exports = {${moduleExports}}`)
-        newModule = require(tempFile)
+        var newModule = require(tempFile)
         fs.unlinkSync(tempFile)
         return newModule
     }}
