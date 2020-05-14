@@ -39,7 +39,7 @@ async function works(testList, err = false){
     var testsFinished = 0;
     for (var [message, code] of Object.entries(testList)){
         write(`[.]: It ${message}\r`)
-        var inter = multiPrint([`[ ]: It ${message}\r`, `[.]: It ${message}\r`], 500)
+        var inter = multiPrint([`[ ]: It ${message}\r`, `[.]: It ${message}\r`], 1000)
         try{
             await code()
             clearInterval(inter)
