@@ -1,6 +1,6 @@
 {
   "name": "itworksjs",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "description": "A simple unit testing library",
   "main": "index.js",
   "scripts": {
@@ -20,5 +20,8 @@
   "bugs": {
     "url": "https://github.com/oekshido/itworks/issues"
   },
-  "homepage": "https://github.com/oekshido/itworks#readme"
+  "homepage": "https://github.com/oekshido/itworks#readme",
+  "devDependencies": {
+    "prettier": "^2.0.5"
+  }
 }

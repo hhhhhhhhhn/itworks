@@ -29,37 +29,44 @@ function multiPrint(messages, step){
     }, step)
 }
 
+function time(){
+	return new Date() / 1000
+}
+
 async function works(testList, err = false){
     /**Tests all functions in the tests object, considers them failed if the throw an error (which is displayed). 
      * err argument throws an error instead of exiting with non-zero code.
     */
+   var initTime = time()
     if(!testList){
         testList = tests
     }
-    var testsFinished = 0;
+    var testsPassed = 0;
     for (var [message, code] of Object.entries(testList)){
+		var start = time()
         write(`[.]: It ${message}\r`)
         var inter = multiPrint([`[ ]: It ${message}\r`, `[.]: It ${message}\r`], 1000)
         try{
-            await code()
+			await code()
             clearInterval(inter)
-            write(`[O]: It ${message}\n`)
-            testsFinished += 1
+            write(`[O]: It ${message} [${(time()-start).toPrecision(4)} s]\n`)
+            testsPassed += 1
         }catch(err){
             clearInterval(inter)
-            write(`[X]: It ${message}${red} FAILED: ${err ? err.message : "(No Error Message)"}\n${reset}`)
+            write(`[X]: It ${message} [${(time()-start).toPrecision(4)} s] ${red}FAILED: ${err ? err.message : "(No Error Message)"}\n${reset}`)
         }
-    }
-    if(testsFinished == Object.entries(testList).length){
-        write(`\nTest PASSED, Result: ${testsFinished}/${Object.entries(tests).length}\n`)
+	}
+	write(`\nFinished Running ${Object.entries(tests).length} Tests in ${Math.floor(time()-initTime)} seconds\n`)
+    if(testsPassed == Object.entries(testList).length){
+        write(`\nTest PASSED, Result: ${testsPassed}/${Object.entries(tests).length}\n`)
         write("\nIt Works!\n")
         return
     }
     else if(err){
-        throw new Error(`Test FAILED, Result: ${testsFinished}/${Object.entries(tests).length}`)
+        throw new Error(`Test FAILED, Result: ${testsPassed}/${Object.entries(tests).length}`)
     }
     else{
-        write(`Test FAILED, Result: ${testsFinished}/${Object.entries(tests).length}\n`)
+        write(`Test FAILED, Result: ${testsPassed}/${Object.entries(tests).length}\n`)
         process.exit(1)
     }
 }
